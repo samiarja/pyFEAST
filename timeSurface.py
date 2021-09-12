@@ -1,6 +1,7 @@
 import time
 import numpy as np
 import glob
+from tqdm import tqdm
 from scipy.io import loadmat
 import matplotlib.pyplot as plt
 import scipy.ndimage as ndimage
@@ -14,8 +15,8 @@ events = mat["TD"]
 event_index = events[:,0].shape[0]
 events[:,3] = events[:,3] - events[1,3]
 
-xs = 35
-ys = 35
+xs  = 35
+ys  = 35
 tau = 1e4
 displayFreq = 1e4
 nextTimeSample = events[1,3]+displayFreq
@@ -25,7 +26,7 @@ T = np.zeros_like(S)
 T = T - np.inf
 P = np.zeros_like(T)
 
-for idx in range(event_index):
+for idx in tqdm(range(event_index)):
     x   = events[idx,0]
     y   = events[idx,1]
     p   = events[idx,2]
@@ -44,6 +45,3 @@ for idx in range(event_index):
         plt.pcolormesh(new_data, cmap='binary')
         plt.pause(.1)
         plt.draw()
-
-    # print("x: ", x_address, " y: ", y_address, " p: ", polarity, " ts: ", timestamp)
-    
